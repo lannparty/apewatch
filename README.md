@@ -1,4 +1,4 @@
-# ape-watcher
+# apewatcher
 Stream Reddit posts and comments containing stock tickers to Elasticsearch for anomlaly detection.
 
 ## Find Investing Subreddits
