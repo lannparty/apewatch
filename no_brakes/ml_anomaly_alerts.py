@@ -53,7 +53,7 @@ def discord_alert(timestamp, ticker, record_score):
         {"name": "Bid", "value": f"${bid}", "inline": True},
     )
     requests.post(
-        "https://discord.com/api/webhooks/818674516116242433/pmZrjXi0gctBhOns-S0ZOxI7DVnrBzefJB7VV6-GgeE6i1zKFIu54kJYagfEqOgJ6i9A",
+        "DISCORD_WEBHOOK_KEY",
         json=webhook,
     )
 
