@@ -1,0 +1,45 @@
+version: "3" 
+services:
+    kibana:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.kibana.rule=Host(`wstream.duran.tech`)"
+        - "traefik.http.routers.kibana.entrypoints=websecure"
+        - "traefik.http.routers.kibana.tls.certresolver=myresolver"
+        - "traefik.http.routers.kibana.middlewares=test-auth"
+        - "traefik.http.middlewares.test-auth.basicauth.users=admin:$$2y$$05$$FbFVmyJCCe2HP4VBlRXK6uNjXj16IR2/R7CoypIx36f5o9TPmLUdy"
+
+    traefik:
+      image: "traefik:v2.4"
+      container_name: "traefik"
+      command:
+        - "--providers.docker=true"
+        - "--providers.docker.exposedbydefault=false"
+        - "--entrypoints.web.address=:80"
+        - "--entrypoints.websecure.address=:443"
+        - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+        - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+        - "--certificatesresolvers.myresolver.acme.email=wsb1@mm.st"
+        - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - letsencrypt:/letsencrypt
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+      networks:
+        - elknetwork
+
+    ml_alerts:
+        build: .
+        container_name: ml_alerts
+        command: ./no_brakes/ml_anomaly_alerts.py
+        networks:
+        - elknetwork
+        depends_on:
+        - elasticsearch
+        restart: on-failure
+
+volumes:
+  letsencrypt:
+    driver: local

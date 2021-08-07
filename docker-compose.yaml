@@ -1,0 +1,56 @@
+version: "3" 
+services:
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+        container_name: elasticsearch
+        environment:
+            - "discovery.type=single-node"
+            - "path.repo=/usr/share/elasticsearch/backups"
+        ports:
+            - 9200:9200
+            - 9300:9300
+        expose: 
+            - "9200"
+        networks:
+            - elknetwork
+        volumes:
+            - data01:/usr/share/elasticsearch/data
+            - es-backups:/usr/share/elasticsearch/backups
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.12.0
+        container_name: kibana
+        ports:
+        - 5601:5601
+        expose:
+        - "5601"
+        environment:
+            ELASTICSEARCH_URL: http://elasticsearch:9200
+            ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+        networks:
+        - elknetwork
+    stream_comments:
+        build: .
+        container_name: stream_comments
+        command: ./no_brakes/comments_elk.py
+        networks:
+        - elknetwork
+        depends_on:
+        - elasticsearch
+        restart: on-failure
+    stream_submissions:
+        build: .
+        container_name: stream_submissions
+        command: ./no_brakes/submissions_elk.py
+        networks:
+        - elknetwork
+        depends_on:
+        - elasticsearch
+        restart: on-failure
+networks:
+    elknetwork:
+        driver: bridge
+volumes:
+  data01:
+    driver: local
+  es-backups:
+    driver: local

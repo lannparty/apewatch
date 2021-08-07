@@ -1,0 +1,161 @@
+{
+  "version": true,
+  "size": 500,
+  "sort": [
+    {
+      "timestamp": {
+        "order": "desc",
+        "unmapped_type": "boolean"
+      }
+    }
+  ],
+  "aggs": {
+    "2": {
+      "date_histogram": {
+        "field": "timestamp",
+        "fixed_interval": "30m",
+        "time_zone": "US/Eastern",
+        "min_doc_count": 1
+      }
+    }
+  },
+  "fields": [
+    {
+      "field": "bucket_influencers.timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "earliest_record_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "exponential_average_calculation_context.latest_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "forecast_create_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "forecast_end_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "forecast_expiry_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "forecast_start_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "last_data_time",
+      "format": "date_time"
+    },
+    {
+      "field": "latest_empty_bucket_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "latest_record_time_stamp",
+      "format": "date_time"
+    },
+    {
+      "field": "latest_record_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "latest_result_time_stamp",
+      "format": "date_time"
+    },
+    {
+      "field": "latest_sparse_bucket_timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "log_time",
+      "format": "date_time"
+    },
+    {
+      "field": "model_size_stats.log_time",
+      "format": "date_time"
+    },
+    {
+      "field": "model_size_stats.timestamp",
+      "format": "date_time"
+    },
+    {
+      "field": "timestamp",
+      "format": "date_time"
+    }
+  ],
+  "script_fields": {},
+  "stored_fields": [
+    "*"
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "bool": {
+            "filter": [
+              {
+                "bool": {
+                  "should": [
+                    {
+                      "exists": {
+                        "field": "ticker"
+                      }
+                    }
+                  ],
+                  "minimum_should_match": 1
+                }
+              },
+              {
+                "bool": {
+                  "should": [
+                    {
+                      "range": {
+                        "record_score": {
+                          "gt": 3
+                        }
+                      }
+                    }
+                  ],
+                  "minimum_should_match": 1
+                }
+              }
+            ]
+          }
+        },
+        {
+          "range": {
+            "timestamp": {
+              "gte": "now-1m",
+              "lte": "now",
+              "format": "strict_date_optional_time"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  },
+  "highlight": {
+    "pre_tags": [
+      "@kibana-highlighted-field@"
+    ],
+    "post_tags": [
+      "@/kibana-highlighted-field@"
+    ],
+    "fields": {
+      "*": {}
+    },
+    "fragment_size": 2147483647
+  }
+}
