@@ -1,4 +1,4 @@
-# rogue-wave
+# ape-watcher
 Stream Reddit posts and comments containing stock tickers to Elasticsearch for anomlaly detection.
 
 ## Find Investing Subreddits
