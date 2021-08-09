@@ -1,5 +1,5 @@
 # apewatch
-Stream Reddit posts and comments containing stock tickers to Elasticsearch for anomlaly detection.
+Stream Reddit posts and comments containing stock tickers to Elasticsearch for anomlaly detection and alert to discord webhook.
 
 ## Find Investing Subreddits
 `python3 no_brakes/subreddits.py`
