@@ -27,10 +27,3 @@ docker-compose -f docker-compose.yaml -f docker-compose-prod.yaml build
 docker-compose -f docker-compose.yaml -f docker-compose-prod.yaml down
 docker-compose -f docker-compose.yaml -f docker-compose-prod.yaml up -d
 ```
-
-## TODO
-- Alert off of growth of most mentioned tickers.
-- Scrape Twitter
-- auto Update Tickers
-- Add Reddit submissions
-- add poster age
